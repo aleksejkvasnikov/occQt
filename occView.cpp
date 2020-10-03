@@ -10,7 +10,15 @@
 */
 
 #include <OpenGl_GraphicDriver.hxx>
-
+#undef Bool
+#undef CursorShape
+#undef None
+#undef KeyPress
+#undef KeyRelease
+#undef FocusIn
+#undef FocusOut
+#undef FontChange
+#undef Expose
 #include "occView.h"
 
 #include <QMenu>
