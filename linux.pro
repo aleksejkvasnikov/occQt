@@ -6,14 +6,18 @@ TARGET = occQt
 TEMPLATE = app
 
 SOURCES += main.cpp \
+    draw/drawableobject.cpp \
     occQt.cpp       \
-    occView.cpp
+    occView.cpp \
+    draw/project.cpp
 
 CONFIG += c++14
 
 HEADERS  += \
+    draw/drawableobject.h \
     occQt.h \
-    occView.h
+    occView.h \
+    draw/project.h
 
 FORMS    += \
     occQt.ui
