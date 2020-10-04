@@ -16,6 +16,7 @@
 #include <QTreeView>
 #include <QMessageBox>
 #include <QDockWidget>
+#include <QFileDialog>
 
 #include <gp_Circ.hxx>
 #include <gp_Elips.hxx>
@@ -75,6 +76,8 @@ occQt::occQt(QWidget *parent)
     createActions();
     createMenus();
     createToolBars();
+    projectName = QObject::tr("Fancy Application");
+    setWindowTitle(projectName);
 }
 
 occQt::~occQt()
@@ -85,6 +88,8 @@ occQt::~occQt()
 void occQt::createActions( void )
 {
     // File
+    connect(ui.actionNewProject, SIGNAL(triggered()), this, SLOT(newProject()));
+    connect(ui.actionOpenProject, SIGNAL(triggered()), this, SLOT(openProject()));
     connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
     // View
@@ -512,6 +517,27 @@ void occQt::testHelix()
     makeToroidalHelix();
 }
 
+void occQt::newProject()
+{
+    checkProjectSave();
+    auto url = QFileDialog::getSaveFileUrl(this, tr("Create Project"), QUrl(), tr("Project Files (*.xml)"));
+    checkProjectAndTitle(url);
+}
+
+void occQt::openProject()
+{
+    checkProjectSave();
+    auto url = QFileDialog::getOpenFileUrl(this, tr("Open Project"), QUrl(), tr("Project Files (*.xml)"));
+    checkProjectAndTitle(url);
+}
+
+void occQt::checkProjectAndTitle(QUrl& url)
+{
+    project = std::make_unique<Project>(url);
+    project->load();
+    setWindowTitle(QString("%1 - %2").arg(projectName, url.toLocalFile()));
+}
+
 void occQt::makeCylindricalHelix()
 {
     Standard_Real aRadius = 3.0;
@@ -666,5 +692,18 @@ void occQt::makeToroidalHelix()
         Handle(AIS_Shape) anAisPipe = new AIS_Shape(aPipeTransform.Shape());
         anAisPipe->SetColor(Quantity_NOC_CORNSILK1);
         myOccView->getContext()->Display(anAisPipe, Standard_True);
+    }
+}
+
+void occQt::closeEvent(QCloseEvent *event)
+{
+    checkProjectSave();
+    event->accept();
+}
+
+void occQt::checkProjectSave()
+{
+    if (project) {
+        project->save();
     }
 }
