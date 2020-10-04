@@ -11,7 +11,7 @@ TestProject::TestProject()
 
 void TestProject::testProject()
 {
-    Project project;
+    Project project("name");
     project.add_object(std::make_shared<Rectangle>(2, 3));
     project.add_object(std::make_shared<Rectangle>(1, 3));
     auto p = std::make_shared<Rectangle>(2, 3);

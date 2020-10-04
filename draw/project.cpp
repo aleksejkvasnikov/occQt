@@ -1,7 +1,7 @@
 #include "project.h"
 #include "drawableobject.h"
 
-Project::Project()
+Project::Project(const std::string&)
 {
 
 }
