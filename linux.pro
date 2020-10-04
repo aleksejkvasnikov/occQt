@@ -7,6 +7,7 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     draw/drawableobject.cpp \
+    draw/rectangle.cpp \
     occQt.cpp       \
     occView.cpp \
     draw/project.cpp
@@ -15,6 +16,7 @@ CONFIG += c++14
 
 HEADERS  += \
     draw/drawableobject.h \
+    draw/rectangle.h \
     occQt.h \
     occView.h \
     draw/project.h
