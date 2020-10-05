@@ -24,13 +24,16 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNewProject"/>
+    <addaction name="actionOpenProject"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -281,6 +284,16 @@
    </property>
    <property name="text">
     <string>Helix</string>
+   </property>
+  </action>
+  <action name="actionNewProject">
+   <property name="text">
+    <string>New project</string>
+   </property>
+  </action>
+  <action name="actionOpenProject">
+   <property name="text">
+    <string>Open project</string>
    </property>
   </action>
  </widget>

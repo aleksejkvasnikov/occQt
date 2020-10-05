@@ -10,6 +10,7 @@ public:
     TestProject();
 private slots:
     void testProject();
+    void testProjectSave();
 };
 
 #endif // TESTPROJECT_H

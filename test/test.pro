@@ -1,4 +1,4 @@
-QT += testlib
+QT += testlib xml
 TEMPLATE = app
 TARGET = test
 INCLUDEPATH += .

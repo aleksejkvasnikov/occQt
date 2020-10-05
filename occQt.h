@@ -13,8 +13,11 @@
 #define OCCQT_H
 
 #include "ui_occQt.h"
+#include "draw/project.h"
 
 #include <AIS_InteractiveContext.hxx>
+#include <QMouseEvent>
+#include <memory>
 
 class OccView;
 
@@ -28,6 +31,8 @@ public:
     occQt(QWidget *parent = nullptr);
     ~occQt();
 
+    void closeEvent(QCloseEvent *event);
+    void checkProjectSave();
 protected:
     //! create all the actions.
     void createActions(void);
@@ -93,11 +98,18 @@ private slots:
     //! test helix shapes.
     void testHelix(void);
 
+    void newProject(void);
+
+    void openProject(void);
+
 private:
     Ui::occQtClass ui;
 
     // wrapped the widget for occ.
     OccView* myOccView;
+    std::unique_ptr<Project> project;
+    void checkProjectAndTitle(QUrl& url);
+    QString projectName;
 };
 
 #endif // OCCQT_H
