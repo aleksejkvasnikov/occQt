@@ -11,7 +11,8 @@
 
 #include "occQt.h"
 #include "occView.h"
-
+#include "objectparamsform.h"
+#include <draw/box.h>
 #include <QToolBar>
 #include <QTreeView>
 #include <QMessageBox>
@@ -64,6 +65,8 @@
 
 #include <AIS_Shape.hxx>
 
+#include <QDebug>
+
 occQt::occQt(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -89,6 +92,7 @@ void occQt::createActions( void )
 {
     // File
     connect(ui.actionNewProject, SIGNAL(triggered()), this, SLOT(newProject()));
+    connect(ui.actionSaveProject, SIGNAL(triggered()), this, SLOT(saveProject()));
     connect(ui.actionOpenProject, SIGNAL(triggered()), this, SLOT(openProject()));
     connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -173,12 +177,9 @@ void occQt::about()
 
 void occQt::makeBox()
 {
-    TopoDS_Shape aTopoBox = BRepPrimAPI_MakeBox(3.0, 4.0, 5.0).Shape();
-    Handle(AIS_Shape) anAisBox = new AIS_Shape(aTopoBox);
-
-    anAisBox->SetColor(Quantity_NOC_AZURE);
-
-    myOccView->getContext()->Display(anAisBox, Standard_True);
+    ObjectParamsForm *boxForm = new ObjectParamsForm(nullptr, "BOX");
+    boxForm->show();
+    connect(boxForm, SIGNAL(boxReady(gp_Pnt, double, double, double)), this, SLOT(drawBox(gp_Pnt, double, double, double)));
 }
 
 void occQt::makeCone()
@@ -524,6 +525,12 @@ void occQt::newProject()
     checkProjectAndTitle(url);
 }
 
+void occQt::saveProject()
+{
+    checkProjectSave();
+    ui.actionSaveProject->setEnabled(false);
+}
+
 void occQt::openProject()
 {
     checkProjectSave();
@@ -531,11 +538,46 @@ void occQt::openProject()
     checkProjectAndTitle(url);
 }
 
+
+void occQt::drawBox(gp_Pnt p, double dx, double dy, double dz)
+{
+    TopoDS_Shape aTopoBox = BRepPrimAPI_MakeBox(p, dx,dy,dz).Shape();
+    Handle(AIS_Shape) anAisBox = new AIS_Shape(aTopoBox);
+    anAisBox->SetColor(Quantity_NOC_MAROON);
+    myOccView->getContext()->Display(anAisBox, Standard_True);
+    project->add_object(std::make_shared<Box>(p.X(),p.Y(),p.Z(),dx,dy,dz));
+}
+
+void occQt::loadScene()
+{
+    auto Objs = project->get_objects();
+    if(Objs.size()>0){
+        for (auto it: Objs)
+        {
+            if(it.second->get_type()=="BOX"){
+                float px = it.second->get_sizeVec()[0];
+                float py = it.second->get_sizeVec()[1];
+                float pz = it.second->get_sizeVec()[2];
+                gp_Pnt p(px,py,pz);
+                float dx = it.second->get_sizeVec()[3];
+                float dy = it.second->get_sizeVec()[4];
+                float dz = it.second->get_sizeVec()[5];
+                TopoDS_Shape aTopoBox = BRepPrimAPI_MakeBox(p, dx,dy,dz).Shape();
+                Handle(AIS_Shape) anAisBox = new AIS_Shape(aTopoBox);
+                anAisBox->SetColor(Quantity_NOC_MAROON);
+                myOccView->getContext()->Display(anAisBox, Standard_True);
+            }
+        }
+    }
+}
+
 void occQt::checkProjectAndTitle(QUrl& url)
 {
     project = std::make_unique<Project>(url);
     project->load();
     setWindowTitle(QString("%1 - %2").arg(projectName, url.toLocalFile()));
+    ui.actionSaveProject->setEnabled(true);
+    loadScene();
 }
 
 void occQt::makeCylindricalHelix()

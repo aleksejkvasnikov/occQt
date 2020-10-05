@@ -4,10 +4,11 @@
 #include <QFile>
 #include <QTextStream>
 #include "rectangle.h"
-
+#include "box.h"
 
 std::map<std::string, std::function<std::shared_ptr<DrawableObject>(QDomElement)>> Project::creation_funcs = {
-    { "rectangle", [](QDomElement e) {return Rectangle::create(e);}}
+    { "rectangle", [](QDomElement e) {return Rectangle::create(e);}},
+    { "box", [](QDomElement e) {return Box::create(e);}}
 };
 
 Project::Project(const QUrl& url0) : url(url0)

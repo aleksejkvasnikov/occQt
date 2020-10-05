@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ObjectParamsForm</class>
+ <widget class="QWidget" name="ObjectParamsForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>246</width>
+    <height>184</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="xyzLayout">
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="xsEdit"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="xfEdit"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLineEdit" name="ysEdit"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="yfEdit"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLineEdit" name="zsEdit"/>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="zfEdit"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="xsLabel">
+       <property name="text">
+        <string>xStart</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="xfLabel">
+       <property name="text">
+        <string>xFinish</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="ysLabel">
+       <property name="text">
+        <string>yStart</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="yfLabel">
+       <property name="text">
+        <string>yFinish</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="zsLabel">
+       <property name="text">
+        <string>zStart</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="zfLabel">
+       <property name="text">
+        <string>zFinish</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonsLayout">
+     <item>
+      <widget class="QPushButton" name="okButton">
+       <property name="text">
+        <string>Ok</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
