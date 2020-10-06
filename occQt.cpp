@@ -12,7 +12,7 @@
 #include "occQt.h"
 #include "occView.h"
 #include "objectparamsform.h"
-#include <draw/box.h>
+
 #include <QToolBar>
 #include <QTreeView>
 #include <QMessageBox>
@@ -66,6 +66,8 @@
 #include <AIS_Shape.hxx>
 
 #include <QDebug>
+#include <draw/box.h>
+#include <draw/cone.h>
 
 occQt::occQt(QWidget *parent)
     : QMainWindow(parent)
@@ -179,27 +181,14 @@ void occQt::makeBox()
 {
     ObjectParamsForm *boxForm = new ObjectParamsForm(nullptr, "BOX");
     boxForm->show();
-    connect(boxForm, SIGNAL(boxReady(gp_Pnt, double, double, double)), this, SLOT(drawBox(gp_Pnt, double, double, double)));
+    connect(boxForm, SIGNAL(boxReady(gp_Pnt, double, double, double, bool)), this, SLOT(drawBox(gp_Pnt, double, double, double, bool)));
 }
 
 void occQt::makeCone()
 {
-    gp_Ax2 anAxis;
-    anAxis.SetLocation(gp_Pnt(0.0, 10.0, 0.0));
-
-    TopoDS_Shape aTopoReducer = BRepPrimAPI_MakeCone(anAxis, 3.0, 1.5, 5.0).Shape();
-    Handle(AIS_Shape) anAisReducer = new AIS_Shape(aTopoReducer);
-
-    anAisReducer->SetColor(Quantity_NOC_BISQUE);
-
-    anAxis.SetLocation(gp_Pnt(8.0, 10.0, 0.0));
-    TopoDS_Shape aTopoCone = BRepPrimAPI_MakeCone(anAxis, 3.0, 0.0, 5.0).Shape();
-    Handle(AIS_Shape) anAisCone = new AIS_Shape(aTopoCone);
-
-    anAisCone->SetColor(Quantity_NOC_CHOCOLATE);
-
-    myOccView->getContext()->Display(anAisReducer, Standard_True);
-    myOccView->getContext()->Display(anAisCone, Standard_True);
+    ObjectParamsForm *coneForm = new ObjectParamsForm(nullptr, "CONE");
+    coneForm->show();
+    connect(coneForm, SIGNAL(coneReady(gp_Pnt, double, double, double, bool)), this, SLOT(drawCone(gp_Pnt, double, double, double, bool)));
 }
 
 void occQt::makeSphere()
@@ -539,13 +528,28 @@ void occQt::openProject()
 }
 
 
-void occQt::drawBox(gp_Pnt p, double dx, double dy, double dz)
+void occQt::drawBox(gp_Pnt p, double dx, double dy, double dz, bool newObj)
 {
     TopoDS_Shape aTopoBox = BRepPrimAPI_MakeBox(p, dx,dy,dz).Shape();
     Handle(AIS_Shape) anAisBox = new AIS_Shape(aTopoBox);
     anAisBox->SetColor(Quantity_NOC_MAROON);
     myOccView->getContext()->Display(anAisBox, Standard_True);
-    project->add_object(std::make_shared<Box>(p.X(),p.Y(),p.Z(),dx,dy,dz));
+    if(newObj){
+        project->add_object(std::make_shared<Box>(p.X(),p.Y(),p.Z(),dx,dy,dz));
+    }
+}
+
+void occQt::drawCone(gp_Pnt p, double r1, double r2, double h, bool newObj)
+{
+    gp_Ax2 anAxis;
+    anAxis.SetLocation(p);
+    TopoDS_Shape aTopoCone = BRepPrimAPI_MakeCone(anAxis, r1, r2, h).Shape();
+    Handle(AIS_Shape) anAisCone = new AIS_Shape(aTopoCone);
+    anAisCone->SetColor(Quantity_NOC_CHOCOLATE);
+    myOccView->getContext()->Display(anAisCone, Standard_True);
+    if(newObj){
+        project->add_object(std::make_shared<Cone>(p.X(),p.Y(),p.Z(),r1,r2,h));
+    }
 }
 
 void occQt::loadScene()
@@ -555,17 +559,8 @@ void occQt::loadScene()
         for (auto it: Objs)
         {
             if(it.second->get_type()=="BOX"){
-                float px = it.second->get_sizeVec()[0];
-                float py = it.second->get_sizeVec()[1];
-                float pz = it.second->get_sizeVec()[2];
-                gp_Pnt p(px,py,pz);
-                float dx = it.second->get_sizeVec()[3];
-                float dy = it.second->get_sizeVec()[4];
-                float dz = it.second->get_sizeVec()[5];
-                TopoDS_Shape aTopoBox = BRepPrimAPI_MakeBox(p, dx,dy,dz).Shape();
-                Handle(AIS_Shape) anAisBox = new AIS_Shape(aTopoBox);
-                anAisBox->SetColor(Quantity_NOC_MAROON);
-                myOccView->getContext()->Display(anAisBox, Standard_True);
+                std::vector<float> s = it.second->get_sizeVec();
+                drawBox(gp_Pnt(s[0],s[1],s[2]),s[3],s[4],s[5],false);
             }
         }
     }

@@ -7,8 +7,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     draw/box.cpp \
+    draw/cone.cpp \
+    draw/cylinder.cpp \
     draw/drawableobject.cpp \
     draw/rectangle.cpp \
+    draw/sphere.cpp \
+    draw/torus.cpp \
     objectparamsform.cpp \
     occQt.cpp       \
     occView.cpp \
@@ -18,8 +22,12 @@ CONFIG += c++14
 
 HEADERS  += \
     draw/box.h \
+    draw/cone.h \
+    draw/cylinder.h \
     draw/drawableobject.h \
     draw/rectangle.h \
+    draw/sphere.h \
+    draw/torus.h \
     objectparamsform.h \
     occQt.h \
     occView.h \

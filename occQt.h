@@ -103,7 +103,9 @@ private slots:
 
     void openProject(void);
 
-    void drawBox(gp_Pnt p, double dx, double dy, double dz);
+    void drawBox(gp_Pnt p, double dx, double dy, double dz, bool newObj);
+
+    void drawCone(gp_Pnt p, double r1, double r2, double h, bool newObj);
 
 private:
     void loadScene();
