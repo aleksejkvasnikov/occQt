@@ -1,7 +1,6 @@
 #ifndef CONE_H
 #define CONE_H
 
-
 #include "drawableobject.h"
 #include <string>
 #include <memory>

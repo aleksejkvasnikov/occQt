@@ -5,11 +5,17 @@
 #include <QTextStream>
 #include "rectangle.h"
 #include "box.h"
-
+#include "cone.h"
+#include "cylinder.h"
+#include "sphere.h"
+#include "torus.h"
 std::map<std::string, std::function<std::shared_ptr<DrawableObject>(QDomElement)>> Project::creation_funcs = {
-    { "rectangle", [](QDomElement e) {return Rectangle::create(e);}},
+//    { "rectangle", [](QDomElement e) {return Rectangle::create(e);}},
     { "box", [](QDomElement e) {return Box::create(e);}},
-    { "cone", [](QDomElement e) {return Box::create(e);}}
+    { "cone", [](QDomElement e) {return Cone::create(e);}},
+    { "cylinder", [](QDomElement e) {return Cylinder::create(e);}},
+    { "sphere", [](QDomElement e) {return Sphere::create(e);}},
+    { "torus", [](QDomElement e) {return Torus::create(e);}}
 };
 
 Project::Project(const QUrl& url0) : url(url0)
