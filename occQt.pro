@@ -6,8 +6,14 @@ TARGET = occQt
 TEMPLATE = app
 
 SOURCES += main.cpp \
+    draw/box.cpp \
+    draw/cone.cpp \
+    draw/cylinder.cpp \
     draw/drawableobject.cpp \
     draw/rectangle.cpp \
+    draw/sphere.cpp \
+    draw/torus.cpp \
+    objectparamsform.cpp \
     occQt.cpp       \
     occView.cpp \
     draw/project.cpp
@@ -15,13 +21,20 @@ SOURCES += main.cpp \
 CONFIG += c++14
 
 HEADERS  += \
+    draw/box.h \
+    draw/cone.h \
+    draw/cylinder.h \
     draw/drawableobject.h \
     draw/rectangle.h \
+    draw/sphere.h \
+    draw/torus.h \
+    objectparamsform.h \
     occQt.h \
     occView.h \
     draw/project.h
 
 FORMS    += \
+    objectparamsform.ui \
     occQt.ui
 
 RESOURCES += \
@@ -55,6 +68,9 @@ INCLUDEPATH +=  \
     }
     win32-msvc2019 {
         compiler=vc16
+    }
+    win32-msvc {
+        compiler=vc15
     }
 
     !contains(QMAKE_TARGET.arch, x86_64) {

@@ -20,7 +20,6 @@
 #include <memory>
 
 class OccView;
-
 //! Qt main window which include OpenCASCADE for its central widget.
 class occQt : public QMainWindow
 {
@@ -100,9 +99,18 @@ private slots:
 
     void newProject(void);
 
+    void saveProject(void);
+
     void openProject(void);
 
+    void drawBox(gp_Pnt p, double dx, double dy, double dz, bool newObj);
+    void drawCone(gp_Pnt p, double r1, double r2, double h, bool newObj);    
+    void drawSphere(gp_Pnt p, double r, bool newObj);
+    void drawCylinder(gp_Pnt p, double r, double h, double angle, bool newObj);
+    void drawTorus(gp_Pnt p, double r1, double r2, double angle, bool newObj);
+
 private:
+    void loadScene();
     Ui::occQtClass ui;
 
     // wrapped the widget for occ.
