@@ -1,4 +1,4 @@
-QT       += core gui opengl xml
+QT       += core gui opengl xml quick qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -6,6 +6,7 @@ TARGET = occQt
 TEMPLATE = app
 
 SOURCES += main.cpp \
+    dataobject.cpp \
     draw/box.cpp \
     draw/cone.cpp \
     draw/cylinder.cpp \
@@ -21,6 +22,7 @@ SOURCES += main.cpp \
 CONFIG += c++14
 
 HEADERS  += \
+    dataobject.h \
     draw/box.h \
     draw/cone.h \
     draw/cylinder.h \
@@ -126,3 +128,5 @@ LIBS +=         \
     -lTKV3d     \
     -lTKOpenGl  \
     -lTKFillet
+
+DISTFILES +=

@@ -20,5 +20,7 @@
         <file>Resources/loft.png</file>
         <file>Resources/revolve.png</file>
         <file>Resources/helix.png</file>
+        <file>ProjectTree.qml</file>
+        <file>ProjectTreeForm.ui.qml</file>
     </qresource>
 </RCC>

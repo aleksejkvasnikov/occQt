@@ -3,6 +3,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QTextStream>
+#include <dataobject.h>
 #include "rectangle.h"
 #include "box.h"
 #include "cone.h"
@@ -90,4 +91,15 @@ void Project::load()
         }
         n = n.nextSibling();
     }
+}
+
+QVariant Project::getData()
+{
+    QList<QObject *> dataList = { };
+    int count = 0;
+    for (auto it: objects_map)
+    {
+        dataList.append(new DataObject(it.second->toString(), count++%2 ? "grey" : "blue"));
+    }
+    return QVariant::fromValue(dataList);
 }
