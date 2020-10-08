@@ -40,7 +40,14 @@ FORMS    += \
 RESOURCES += \
     occqt.qrc
 
-CASROOT = D:/CASCADE/CASROOT
+CASROOT = $$(CASROOT)
+CASINCLUDE = $$(CASINCLUDE)
+isEmpty (CASROOT) {
+    CASROOT = D:/CASCADE/CASROOT
+}
+isEmpty (CASINCLUDE) {
+    CASINCLUDE = D:/CASCADE/CASROOT/include/opencascade
+}
 
 win32 {
 DEFINES +=  \
@@ -97,7 +104,7 @@ INCLUDEPATH +=  \
 
 linux-g++ {
     INCLUDEPATH +=  \
-        $$CASROOT/include/opencascade
+        $$CASINCLUDE
 
     LIBS +=         \
         -L$$CASROOT/lib
