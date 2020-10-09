@@ -20,9 +20,9 @@ void Torus::drawOnScene(const Handle(AIS_InteractiveContext) &c)
     anAxis.SetLocation(gp_Pnt(px,py,pz));
     TopoDS_Shape aTopoElbow = BRepPrimAPI_MakeTorus(anAxis, r1, r2).Shape();
     //TopoDS_Shape aTopoElbow = BRepPrimAPI_MakeTorus(anAxis, r1, r2, angle).Shape();
-    Handle(AIS_Shape) anAisElbow = new AIS_Shape(aTopoElbow);
-    anAisElbow->SetColor(Quantity_NOC_THISTLE);
-    c->Display(anAisElbow, Standard_True);
+    obj = new AIS_Shape(aTopoElbow);
+    obj->SetColor(Quantity_NOC_THISTLE);
+    c->Display(obj, Standard_True);
 }
 
 QDomElement Torus::xml_element(QDomDocument& document)

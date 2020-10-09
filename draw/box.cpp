@@ -16,9 +16,9 @@ Box::Box(float px0, float py0, float pz0, float x0, float y0, float z0) : px(px0
 void Box::drawOnScene(const Handle(AIS_InteractiveContext) &c)
 {
     TopoDS_Shape aTopoBox = BRepPrimAPI_MakeBox(gp_Pnt(px,py,pz), x, y, z).Shape();
-    Handle(AIS_Shape) anAisBox = new AIS_Shape(aTopoBox);
-    anAisBox->SetColor(Quantity_NOC_MAROON);
-    c->Display(anAisBox, Standard_True);
+    obj = new AIS_Shape(aTopoBox);
+    obj->SetColor(Quantity_NOC_MAROON);
+    c->Display(obj, Standard_True);
 }
 
 QDomElement Box::xml_element(QDomDocument& document)

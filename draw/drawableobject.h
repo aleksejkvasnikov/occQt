@@ -4,6 +4,7 @@
 #include <QDomElement>
 #include <QDomDocument>
 #include <vector>
+#include <AIS_Shape.hxx>
 #include <AIS_InteractiveContext.hxx>
 class DrawableObject
 {   
@@ -14,19 +15,16 @@ class DrawableObject
 
 public:   
     DrawableObject();
-    bool operator==(DrawableObject const &o){
-        if(const DrawableObject* v = dynamic_cast<const DrawableObject*>(&o)) {
-            return v->sizes == sizes;
-        }
-        return false;
-    };
+    bool operator==(DrawableObject const &o);
     int get_id() {return id;}
     void add_sizeVec(float a) {sizes.push_back(a);}
     std::vector<float> get_sizeVec(){return sizes;}
     QString get_type() {return type;}
     void set_type(QString t) {type=t;}
     virtual void drawOnScene(const Handle(AIS_InteractiveContext)&) = 0;
+    void removeFromScene(const Handle(AIS_InteractiveContext)&);
     virtual QDomElement xml_element(QDomDocument&)=0;
+    Handle(AIS_Shape) obj;
 };
 
 #endif // DRAWABLEOBJECT_H

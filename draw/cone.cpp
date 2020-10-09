@@ -18,9 +18,9 @@ void Cone::drawOnScene(const Handle(AIS_InteractiveContext) &c)
     gp_Ax2 anAxis;
     anAxis.SetLocation(gp_Pnt(px,py,pz));
     TopoDS_Shape aTopoCone = BRepPrimAPI_MakeCone(anAxis, r1, r2, h).Shape();
-    Handle(AIS_Shape) anAisCone = new AIS_Shape(aTopoCone);
-    anAisCone->SetColor(Quantity_NOC_CHOCOLATE);
-    c->Display(anAisCone, Standard_True);
+    obj = new AIS_Shape(aTopoCone);
+    obj->SetColor(Quantity_NOC_CHOCOLATE);
+    c->Display(obj, Standard_True);
 }
 
 QDomElement Cone::xml_element(QDomDocument& document)

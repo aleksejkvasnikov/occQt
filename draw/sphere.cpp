@@ -16,9 +16,9 @@ void Sphere::drawOnScene(const Handle(AIS_InteractiveContext) &c)
     gp_Ax2 anAxis;
     anAxis.SetLocation(gp_Pnt(px,py,pz));
     TopoDS_Shape aTopoSphere = BRepPrimAPI_MakeSphere(anAxis, r).Shape();
-    Handle(AIS_Shape) anAisSphere = new AIS_Shape(aTopoSphere);
-    anAisSphere->SetColor(Quantity_NOC_BLUE1);
-    c->Display(anAisSphere, Standard_True);
+    obj = new AIS_Shape(aTopoSphere);
+    obj->SetColor(Quantity_NOC_BLUE1);
+    c->Display(obj, Standard_True);
 }
 
 QDomElement Sphere::xml_element(QDomDocument& document)

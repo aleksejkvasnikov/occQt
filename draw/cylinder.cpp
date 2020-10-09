@@ -20,9 +20,9 @@ void Cylinder::drawOnScene(const Handle(AIS_InteractiveContext) &c)
     anAxis.SetLocation(gp_Pnt(px,py,pz));
     TopoDS_Shape aTopoPie = BRepPrimAPI_MakeCylinder(anAxis, r1, h).Shape();
     //TopoDS_Shape aTopoPie = BRepPrimAPI_MakeCylinder(anAxis, r, h, angle).Shape();
-    Handle(AIS_Shape) anAisPie = new AIS_Shape(aTopoPie);
-    anAisPie->SetColor(Quantity_NOC_TAN);
-    c->Display(anAisPie, Standard_True);
+    obj = new AIS_Shape(aTopoPie);
+    obj->SetColor(Quantity_NOC_TAN);
+    c->Display(obj, Standard_True);
 }
 
 QDomElement Cylinder::xml_element(QDomDocument& document)

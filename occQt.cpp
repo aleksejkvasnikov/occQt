@@ -101,6 +101,10 @@ void occQt::createActions( void )
     connect(ui.actionOpenProject, SIGNAL(triggered()), this, SLOT(openProject()));
     connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
+    // Edit
+    connect(ui.actionRemove_all, SIGNAL(triggered()), this, SLOT(clearScene()));
+    connect(ui.actionRemove_selected, SIGNAL(triggered()), this, SLOT(removeObject()));
+
     // View
     connect(ui.actionZoom, SIGNAL(triggered()), myOccView, SLOT(zoom()));
     connect(ui.actionPan, SIGNAL(triggered()), myOccView, SLOT(pan()));
@@ -553,9 +557,26 @@ void occQt::loadScene()
 
 void occQt::clearScene()
 {
-    myOccView->getContext()->RemoveAll(true);
-    project->remove_all_objects();
+    auto Objs = project->get_objects();
+    if(Objs.size()>0){
+        myOccView->getContext()->RemoveAll(true);
+        project->remove_all_objects();
+    }
+}
 
+void occQt::removeObject()
+{
+    auto Objs = project->get_objects();
+    if(Objs.size()>0){
+        for (auto it: Objs)
+        {
+            auto rhs = myOccView->getContext()->FirstSelectedObject();
+            if(it.second->obj == rhs){
+                project->remove_object(it.second->get_id());
+                it.second->removeFromScene(myOccView->getContext());
+            }
+        }
+    }
 }
 
 void occQt::checkProjectAndTitle(QUrl& url)
@@ -565,6 +586,7 @@ void occQt::checkProjectAndTitle(QUrl& url)
         ui.menuPrimitive->setEnabled(true);
     }
     project = std::make_unique<Project>(url);
+    myOccView->getContext()->RemoveAll(true);
     project->load();
     setWindowTitle(QString("%1 - %2").arg(projectName, url.toLocalFile()));
     loadScene();

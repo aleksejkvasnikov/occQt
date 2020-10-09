@@ -108,10 +108,11 @@ private slots:
     void drawSphere(gp_Pnt p, double r);
     void drawCylinder(gp_Pnt p, double r, double h, double angle);
     void drawTorus(gp_Pnt p, double r1, double r2, double angle);
+    void clearScene();
+    void removeObject();
 
 private:
     void loadScene();
-    void clearScene();
     Ui::occQtClass ui;
 
     // wrapped the widget for occ.

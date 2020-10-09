@@ -15,6 +15,7 @@ public:
     Box(float px, float py, float pz, float x, float y, float z);
     QDomElement xml_element(QDomDocument&);
     void drawOnScene(const Handle(AIS_InteractiveContext) &c);
+    void removeFromScene(const Handle(AIS_InteractiveContext) &c);
     static std::shared_ptr<DrawableObject> create(QDomElement);
 };
 

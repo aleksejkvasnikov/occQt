@@ -3,7 +3,6 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QTextStream>
-#include "rectangle.h"
 #include "box.h"
 #include "cone.h"
 #include "cylinder.h"
