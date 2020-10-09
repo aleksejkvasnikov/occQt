@@ -13,12 +13,14 @@ Cone::Cone(float px0, float py0, float pz0, float r10, float r20, float h0) : px
     set_type("CONE");
 }
 
-bool Cone::operator==(const DrawableObject &o)
+void Cone::drawOnScene(const Handle(AIS_InteractiveContext) &c)
 {
-    if(const Cone* v = dynamic_cast<const Cone*>(&o)) {
-        return v->px == px && v->py == py && v->pz == pz && v->r1 == r1 && v->r2 == r2 && v->h == h;
-    }
-    return false;
+    gp_Ax2 anAxis;
+    anAxis.SetLocation(gp_Pnt(px,py,pz));
+    TopoDS_Shape aTopoCone = BRepPrimAPI_MakeCone(anAxis, r1, r2, h).Shape();
+    Handle(AIS_Shape) anAisCone = new AIS_Shape(aTopoCone);
+    anAisCone->SetColor(Quantity_NOC_CHOCOLATE);
+    c->Display(anAisCone, Standard_True);
 }
 
 QDomElement Cone::xml_element(QDomDocument& document)

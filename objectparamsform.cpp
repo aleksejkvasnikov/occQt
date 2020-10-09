@@ -45,7 +45,7 @@ void ObjectParamsForm::on_okButton_clicked()
             dy=abs(yf-ys),
             dz=abs(zf-zs);
         gp_Pnt P(px,py,pz);
-        emit boxReady(P, dx, dy, dz, true);
+        emit boxReady(P, dx, dy, dz);
     } else {
         double px = ui->xEdit->text().toDouble(),
             py=ui->yEdit->text().toDouble(),
@@ -55,20 +55,20 @@ void ObjectParamsForm::on_okButton_clicked()
             double r1 = ui->R1ConEdit->text().toDouble(),
             r2 = ui->R2ConEdit->text().toDouble(),
             h = ui->HConEdit->text().toDouble();
-            emit coneReady(P, r1, r2, h, true);
+            emit coneReady(P, r1, r2, h);
         } else if(_type=="SPHERE"){
             double r = ui->RSphEdit->text().toDouble();
-            emit sphereReady(P, r, true);
+            emit sphereReady(P, r);
         } else if(_type=="TORUS"){
             double r1 = ui->R1TorEdit->text().toDouble();
             double r2 = ui->R2TorEdit->text().toDouble();
             double angle = ui->AnTorEdit->text().toDouble();
-            emit torusReady(P, r1, r2, angle, true);
+            emit torusReady(P, r1, r2, angle);
         } else if(_type=="CYLINDER"){
             double r = ui->RCylEdit->text().toDouble();
             double h = ui->HCylEdit->text().toDouble();
             double angle = ui->AnCylEdit->text().toDouble();
-            emit cylinderReady(P, r, h, angle, true);
+            emit cylinderReady(P, r, h, angle);
         }
     }
     close();

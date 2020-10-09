@@ -10,7 +10,6 @@
 #include "sphere.h"
 #include "torus.h"
 std::map<std::string, std::function<std::shared_ptr<DrawableObject>(QDomElement)>> Project::creation_funcs = {
-//    { "rectangle", [](QDomElement e) {return Rectangle::create(e);}},
     { "box", [](QDomElement e) {return Box::create(e);}},
     { "cone", [](QDomElement e) {return Cone::create(e);}},
     { "cylinder", [](QDomElement e) {return Cylinder::create(e);}},
@@ -30,6 +29,11 @@ void Project::add_object(std::shared_ptr<DrawableObject> object)
 void Project::remove_object(int id)
 {
     objects_map.erase(id);
+}
+
+void Project::remove_all_objects()
+{
+    objects_map.clear();
 }
 
 std::map<int, std::shared_ptr<DrawableObject>> Project::get_objects()

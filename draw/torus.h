@@ -4,6 +4,8 @@
 #include "drawableobject.h"
 #include <string>
 #include <memory>
+#include <AIS_Shape.hxx>
+#include <BRepPrimAPI_MakeTorus.hxx>
 
 class Torus : public DrawableObject
 {
@@ -11,8 +13,8 @@ class Torus : public DrawableObject
 public:
     static const std::string NAME;
     Torus(float px, float py, float pz, float r1, float r2, float angle);
-    virtual bool operator==(const DrawableObject&);
     QDomElement xml_element(QDomDocument&);
+    void drawOnScene(const Handle(AIS_InteractiveContext) &c);
     static std::shared_ptr<DrawableObject> create(QDomElement);
 };
 

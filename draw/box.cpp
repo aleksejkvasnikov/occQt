@@ -13,12 +13,12 @@ Box::Box(float px0, float py0, float pz0, float x0, float y0, float z0) : px(px0
     set_type("BOX");
 }
 
-bool Box::operator==(const DrawableObject &o)
+void Box::drawOnScene(const Handle(AIS_InteractiveContext) &c)
 {
-    if(const Box* v = dynamic_cast<const Box*>(&o)) {
-        return v->px == px && v->py == py && v->pz == pz && v->x == x && v->y == y && v->z == z;
-    }
-    return false;
+    TopoDS_Shape aTopoBox = BRepPrimAPI_MakeBox(gp_Pnt(px,py,pz), x, y, z).Shape();
+    Handle(AIS_Shape) anAisBox = new AIS_Shape(aTopoBox);
+    anAisBox->SetColor(Quantity_NOC_MAROON);
+    c->Display(anAisBox, Standard_True);
 }
 
 QDomElement Box::xml_element(QDomDocument& document)
