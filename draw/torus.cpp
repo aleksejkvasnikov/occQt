@@ -14,12 +14,15 @@ Torus::Torus(float px0, float py0, float pz0, float r10, float r20, float angle0
     set_type("TORUS");
 }
 
-bool Torus::operator==(const DrawableObject &o)
+void Torus::drawOnScene(const Handle(AIS_InteractiveContext) &c)
 {
-    if(const Torus* v = dynamic_cast<const Torus*>(&o)) {
-        return v->px == px && v->py == py && v->pz == pz && v->r1 == r1 && v->r2 == r2 && v->angle == angle;
-    }
-    return false;
+    gp_Ax2 anAxis;
+    anAxis.SetLocation(gp_Pnt(px,py,pz));
+    TopoDS_Shape aTopoElbow = BRepPrimAPI_MakeTorus(anAxis, r1, r2).Shape();
+    //TopoDS_Shape aTopoElbow = BRepPrimAPI_MakeTorus(anAxis, r1, r2, angle).Shape();
+    obj = new AIS_Shape(aTopoElbow);
+    obj->SetColor(Quantity_NOC_THISTLE);
+    c->Display(obj, Standard_True);
 }
 
 QDomElement Torus::xml_element(QDomDocument& document)

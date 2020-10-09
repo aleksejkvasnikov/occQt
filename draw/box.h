@@ -4,6 +4,8 @@
 #include "drawableobject.h"
 #include <string>
 #include <memory>
+#include <AIS_Shape.hxx>
+#include <BRepPrimAPI_MakeBox.hxx>
 
 class Box : public DrawableObject
 {
@@ -11,8 +13,9 @@ class Box : public DrawableObject
 public:
     static const std::string NAME;
     Box(float px, float py, float pz, float x, float y, float z);
-    virtual bool operator==(const DrawableObject&);
     QDomElement xml_element(QDomDocument&);
+    void drawOnScene(const Handle(AIS_InteractiveContext) &c);
+    void removeFromScene(const Handle(AIS_InteractiveContext) &c);
     static std::shared_ptr<DrawableObject> create(QDomElement);
 };
 

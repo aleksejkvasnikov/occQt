@@ -4,6 +4,8 @@
 #include "drawableobject.h"
 #include <string>
 #include <memory>
+#include <AIS_Shape.hxx>
+#include <BRepPrimAPI_MakeSphere.hxx>
 
 class Sphere : public DrawableObject
 {
@@ -11,8 +13,8 @@ class Sphere : public DrawableObject
 public:
     static const std::string NAME;
     Sphere(float px, float py, float pz, float r);
-    virtual bool operator==(const DrawableObject&);
     QDomElement xml_element(QDomDocument&);
+    void drawOnScene(const Handle(AIS_InteractiveContext) &c);
     static std::shared_ptr<DrawableObject> create(QDomElement);
 };
 

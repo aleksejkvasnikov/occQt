@@ -81,7 +81,15 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionRemove_selected"/>
+    <addaction name="actionRemove_all"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
    <addaction name="menuView"/>
    <addaction name="menuPrimitive"/>
    <addaction name="menuModeling"/>
@@ -309,6 +317,16 @@
   <action name="actionSaveProjectAs">
    <property name="text">
     <string>Save Project &amp;As...</string>
+   </property>
+  </action>
+  <action name="actionRemove_all">
+   <property name="text">
+    <string>Remove all</string>
+   </property>
+  </action>
+  <action name="actionRemove_selected">
+   <property name="text">
+    <string>Remove selected</string>
    </property>
   </action>
  </widget>

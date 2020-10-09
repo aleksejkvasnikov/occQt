@@ -21,6 +21,7 @@ public:
     void setUrl(QUrl url0) {url = url0;}
     void add_object(std::shared_ptr<DrawableObject>);
     void remove_object(int id);
+    void remove_all_objects();
     std::map<int, std::shared_ptr<DrawableObject>> get_objects();
     void save();
     void load();

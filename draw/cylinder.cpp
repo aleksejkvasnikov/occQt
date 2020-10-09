@@ -14,12 +14,15 @@ Cylinder::Cylinder(float px0, float py0, float pz0, float r10, float h0, float a
     set_type("CYLINDER");
 }
 
-bool Cylinder::operator==(const DrawableObject &o)
+void Cylinder::drawOnScene(const Handle(AIS_InteractiveContext) &c)
 {
-    if(const Cylinder* v = dynamic_cast<const Cylinder*>(&o)) {
-        return v->px == px && v->py == py && v->pz == pz && v->r1 == r1 && v->h == h && v->angle == angle;
-    }
-    return false;
+    gp_Ax2 anAxis;
+    anAxis.SetLocation(gp_Pnt(px,py,pz));
+    TopoDS_Shape aTopoPie = BRepPrimAPI_MakeCylinder(anAxis, r1, h).Shape();
+    //TopoDS_Shape aTopoPie = BRepPrimAPI_MakeCylinder(anAxis, r, h, angle).Shape();
+    obj = new AIS_Shape(aTopoPie);
+    obj->SetColor(Quantity_NOC_TAN);
+    c->Display(obj, Standard_True);
 }
 
 QDomElement Cylinder::xml_element(QDomDocument& document)

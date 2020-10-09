@@ -105,6 +105,10 @@ void occQt::createActions( void )
     connect(ui.actionOpenProject, SIGNAL(triggered()), this, SLOT(openProject()));
     connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
+    // Edit
+    connect(ui.actionRemove_all, SIGNAL(triggered()), this, SLOT(clearScene()));
+    connect(ui.actionRemove_selected, SIGNAL(triggered()), this, SLOT(removeObject()));
+
     // View
     connect(ui.actionZoom, SIGNAL(triggered()), myOccView, SLOT(zoom()));
     connect(ui.actionPan, SIGNAL(triggered()), myOccView, SLOT(pan()));
@@ -189,40 +193,40 @@ void occQt::makeBox()
 {
     ObjectParamsForm *boxForm = new ObjectParamsForm(nullptr, "BOX");
     boxForm->show();
-    connect(boxForm, SIGNAL(boxReady(gp_Pnt, double, double, double, bool)),
-            this, SLOT(drawBox(gp_Pnt, double, double, double, bool)));
+    connect(boxForm, SIGNAL(boxReady(gp_Pnt, double, double, double)),
+            this, SLOT(drawBox(gp_Pnt, double, double, double)));
 }
 
 void occQt::makeCone()
 {
     ObjectParamsForm *coneForm = new ObjectParamsForm(nullptr, "CONE");
     coneForm->show();
-    connect(coneForm, SIGNAL(coneReady(gp_Pnt, double, double, double, bool)),
-            this, SLOT(drawCone(gp_Pnt, double, double, double, bool)));
+    connect(coneForm, SIGNAL(coneReady(gp_Pnt, double, double, double)),
+            this, SLOT(drawCone(gp_Pnt, double, double, double)));
 }
 
 void occQt::makeSphere()
 {
     ObjectParamsForm *sphereForm = new ObjectParamsForm(nullptr, "SPHERE");
     sphereForm->show();
-    connect(sphereForm, SIGNAL(sphereReady(gp_Pnt, double, bool)),
-            this, SLOT(drawSphere(gp_Pnt, double, bool)));
+    connect(sphereForm, SIGNAL(sphereReady(gp_Pnt, double)),
+            this, SLOT(drawSphere(gp_Pnt, double)));
 }
 
 void occQt::makeCylinder()
 {
     ObjectParamsForm *cylinderForm = new ObjectParamsForm(nullptr, "CYLINDER");
     cylinderForm->show();
-    connect(cylinderForm, SIGNAL(cylinderReady(gp_Pnt, double, double, double, bool)),
-            this, SLOT(drawCylinder(gp_Pnt, double, double, double, bool)));
+    connect(cylinderForm, SIGNAL(cylinderReady(gp_Pnt, double, double, double)),
+            this, SLOT(drawCylinder(gp_Pnt, double, double, double)));
 }
 
 void occQt::makeTorus()
 {
     ObjectParamsForm *torusForm = new ObjectParamsForm(nullptr, "TORUS");
     torusForm->show();
-    connect(torusForm, SIGNAL(torusReady(gp_Pnt, double, double, double, bool)),
-            this, SLOT(drawTorus(gp_Pnt, double, double, double, bool)));
+    connect(torusForm, SIGNAL(torusReady(gp_Pnt, double, double, double)),
+            this, SLOT(drawTorus(gp_Pnt, double, double, double)));
 }
 
 void occQt::makeFillet()
@@ -515,68 +519,39 @@ void occQt::openProject()
 }
 
 
-void occQt::drawBox(gp_Pnt p, double dx, double dy, double dz, bool newObj)
-{
-    TopoDS_Shape aTopoBox = BRepPrimAPI_MakeBox(p, dx, dy, dz).Shape();
-    Handle(AIS_Shape) anAisBox = new AIS_Shape(aTopoBox);
-    anAisBox->SetColor(Quantity_NOC_MAROON);
-    myOccView->getContext()->Display(anAisBox, Standard_True);
-    if(newObj){
-        project->add_object(std::make_shared<Box>(p.X(), p.Y(), p.Z(), dx, dy, dz));
-    }
+void occQt::drawBox(gp_Pnt p, double dx, double dy, double dz)
+{   
+    auto box = std::make_shared<Box>(p.X(), p.Y(), p.Z(), dx, dy, dz);
+    box->drawOnScene(myOccView->getContext());
+    project->add_object(box);
 }
 
-void occQt::drawCone(gp_Pnt p, double r1, double r2, double h, bool newObj)
+void occQt::drawCone(gp_Pnt p, double r1, double r2, double h)
 {
-    gp_Ax2 anAxis;
-    anAxis.SetLocation(p);
-    TopoDS_Shape aTopoCone = BRepPrimAPI_MakeCone(anAxis, r1, r2, h).Shape();
-    Handle(AIS_Shape) anAisCone = new AIS_Shape(aTopoCone);
-    anAisCone->SetColor(Quantity_NOC_CHOCOLATE);
-    myOccView->getContext()->Display(anAisCone, Standard_True);
-    if(newObj){
-        project->add_object(std::make_shared<Cone>(p.X(), p.Y(), p.Z(), r1, r2, h));
-    }
+    auto cone = std::make_shared<Cone>(p.X(), p.Y(), p.Z(), r1, r2, h);
+    cone->drawOnScene(myOccView->getContext());
+    project->add_object(cone);
 }
 
-void occQt::drawSphere(gp_Pnt p, double r, bool newObj)
+void occQt::drawSphere(gp_Pnt p, double r)
 {
-    gp_Ax2 anAxis;
-    anAxis.SetLocation(p);
-    TopoDS_Shape aTopoSphere = BRepPrimAPI_MakeSphere(anAxis, r).Shape();
-    Handle(AIS_Shape) anAisSphere = new AIS_Shape(aTopoSphere);
-    anAisSphere->SetColor(Quantity_NOC_BLUE1);
-    myOccView->getContext()->Display(anAisSphere, Standard_True);
-    if(newObj){
-        project->add_object(std::make_shared<Sphere>(p.X(), p.Y(), p.Z(), r));
-    }
+    auto sphere = std::make_shared<Sphere>(p.X(), p.Y(), p.Z(), r);
+    sphere->drawOnScene(myOccView->getContext());
+    project->add_object(sphere);
 }
 
-void occQt::drawCylinder(gp_Pnt p, double r, double h, double angle, bool newObj)
+void occQt::drawCylinder(gp_Pnt p, double r, double h, double angle)
 {
-    gp_Ax2 anAxis;
-    anAxis.SetLocation(p);
-    TopoDS_Shape aTopoPie = BRepPrimAPI_MakeCylinder(anAxis, r, h).Shape();
-    //TopoDS_Shape aTopoPie = BRepPrimAPI_MakeCylinder(anAxis, r, h, angle).Shape();
-    Handle(AIS_Shape) anAisPie = new AIS_Shape(aTopoPie);
-    anAisPie->SetColor(Quantity_NOC_TAN);
-    myOccView->getContext()->Display(anAisPie, Standard_True);
-    if(newObj){
-        project->add_object(std::make_shared<Cylinder>(p.X(), p.Y(), p.Z(), r, h, angle));
-    }
+    auto cylinder = std::make_shared<Cylinder>(p.X(), p.Y(), p.Z(), r, h, angle);
+    cylinder->drawOnScene(myOccView->getContext());
+    project->add_object(cylinder);
 }
 
-void occQt::drawTorus(gp_Pnt p, double r1, double r2, double angle, bool newObj)
-{    gp_Ax2 anAxis;
-     anAxis.SetLocation(p);
-    TopoDS_Shape aTopoElbow = BRepPrimAPI_MakeTorus(anAxis, r1, r2).Shape();
-     //TopoDS_Shape aTopoElbow = BRepPrimAPI_MakeTorus(anAxis, r1, r2, angle).Shape();
-     Handle(AIS_Shape) anAisElbow = new AIS_Shape(aTopoElbow);
-     anAisElbow->SetColor(Quantity_NOC_THISTLE);
-     myOccView->getContext()->Display(anAisElbow, Standard_True);
-    if(newObj){
-        project->add_object(std::make_shared<Torus>(p.X(), p.Y(), p.Z(), r1, r2, angle));
-    }
+void occQt::drawTorus(gp_Pnt p, double r1, double r2, double angle)
+{
+    auto torus = std::make_shared<Torus>(p.X(), p.Y(), p.Z(), r1, r2, angle);
+    torus->drawOnScene(myOccView->getContext());
+    project->add_object(torus);
 }
 
 void occQt::loadScene()
@@ -585,22 +560,30 @@ void occQt::loadScene()
     if(Objs.size()>0){
         for (auto it: Objs)
         {
-            if(it.second->get_type()=="BOX"){
-                std::vector<float> s = it.second->get_sizeVec();
-                drawBox(gp_Pnt(s[0],s[1],s[2]),s[3],s[4],s[5],false);
-            }
-            else if(it.second->get_type()=="CONE"){
-                std::vector<float> s = it.second->get_sizeVec();
-                drawCone(gp_Pnt(s[0],s[1],s[2]),s[3],s[4],s[5],false);
-            }else if(it.second->get_type()=="SPHERE"){
-                std::vector<float> s = it.second->get_sizeVec();
-                drawSphere(gp_Pnt(s[0],s[1],s[2]),s[3],false);
-            }else if(it.second->get_type()=="TORUS"){
-                std::vector<float> s = it.second->get_sizeVec();
-                drawTorus(gp_Pnt(s[0],s[1],s[2]),s[3],s[4],s[5],false);
-            }else if(it.second->get_type()=="CYLINDER"){
-                std::vector<float> s = it.second->get_sizeVec();
-                drawCylinder(gp_Pnt(s[0],s[1],s[2]),s[3],s[4],s[5],false);
+            it.second->drawOnScene(myOccView->getContext());
+        }
+    }
+}
+
+void occQt::clearScene()
+{
+    auto Objs = project->get_objects();
+    if(Objs.size()>0){
+        myOccView->getContext()->RemoveAll(true);
+        project->remove_all_objects();
+    }
+}
+
+void occQt::removeObject()
+{
+    auto Objs = project->get_objects();
+    if(Objs.size()>0){
+        for (auto it: Objs)
+        {
+            auto rhs = myOccView->getContext()->FirstSelectedObject();
+            if(it.second->obj == rhs){
+                project->remove_object(it.second->get_id());
+                it.second->removeFromScene(myOccView->getContext());
             }
         }
     }
@@ -614,6 +597,7 @@ void occQt::checkProjectAndTitle(QUrl& url)
         ui.menuPrimitive->setEnabled(true);
     }
     project = std::make_unique<Project>(url);
+    myOccView->getContext()->RemoveAll(true);
     project->load();
     setWindowTitle(QString("%1 - %2").arg(projectName, url.toLocalFile()));
     loadScene();
