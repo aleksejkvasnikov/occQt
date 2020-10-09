@@ -11,12 +11,14 @@ Sphere::Sphere(float px0, float py0, float pz0, float r0) : px(px0), py(py0), pz
     set_type("SPHERE");
 }
 
-bool Sphere::operator==(const DrawableObject &o)
+void Sphere::drawOnScene(const Handle(AIS_InteractiveContext) &c)
 {
-    if(const Sphere* v = dynamic_cast<const Sphere*>(&o)) {
-        return v->px == px && v->py == py && v->pz == pz && v->r == r;
-    }
-    return false;
+    gp_Ax2 anAxis;
+    anAxis.SetLocation(gp_Pnt(px,py,pz));
+    TopoDS_Shape aTopoSphere = BRepPrimAPI_MakeSphere(anAxis, r).Shape();
+    obj = new AIS_Shape(aTopoSphere);
+    obj->SetColor(Quantity_NOC_BLUE1);
+    c->Display(obj, Standard_True);
 }
 
 QDomElement Sphere::xml_element(QDomDocument& document)

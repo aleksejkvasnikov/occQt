@@ -10,7 +10,6 @@ SOURCES += main.cpp \
     draw/cone.cpp \
     draw/cylinder.cpp \
     draw/drawableobject.cpp \
-    draw/rectangle.cpp \
     draw/sphere.cpp \
     draw/torus.cpp \
     objectparamsform.cpp \
@@ -25,7 +24,6 @@ HEADERS  += \
     draw/cone.h \
     draw/cylinder.h \
     draw/drawableobject.h \
-    draw/rectangle.h \
     draw/sphere.h \
     draw/torus.h \
     objectparamsform.h \
