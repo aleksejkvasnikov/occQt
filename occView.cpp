@@ -19,6 +19,7 @@
 #undef FocusOut
 #undef FontChange
 #undef Expose
+#undef Status
 #include "occView.h"
 
 #include <QMenu>

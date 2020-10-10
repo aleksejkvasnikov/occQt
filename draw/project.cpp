@@ -4,7 +4,6 @@
 #include <QFile>
 #include <QTextStream>
 #include "../dataobject.h"
-#include "rectangle.h"
 #include "box.h"
 #include "cone.h"
 #include "cylinder.h"
@@ -18,13 +17,15 @@ std::map<std::string, std::function<std::shared_ptr<DrawableObject>(QDomElement)
     { "torus", [](QDomElement e) {return Torus::create(e);}}
 };
 
-Project::Project(const QUrl& url0) : url(url0)
+Project::Project(const QUrl& url0) : url(url0), count(0)
 {
+    model = std::make_shared<MyModel>();
 }
 
 void Project::add_object(std::shared_ptr<DrawableObject> object)
 {
     objects_map[object->get_id()] = object;
+    addItem(object->toString());
 }
 
 void Project::remove_object(int id)
@@ -99,11 +100,9 @@ void Project::load()
 
 QVariant Project::getData()
 {
-    QList<QObject *> dataList = { };
-    int count = 0;
-    for (auto it: objects_map)
-    {
-        dataList.append(new DataObject(it.second->toString(), count++%2 ? "grey" : "blue"));
-    }
-    return QVariant::fromValue(dataList);
+    return QVariant::fromValue(model.get());
+}
+
+void Project::addItem(const QString& name) {
+    model->addITem(new DataObject(name, count++%2 ? "grey" : "blue"));
 }

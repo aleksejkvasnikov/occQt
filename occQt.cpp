@@ -522,36 +522,42 @@ void occQt::openProject()
 void occQt::drawBox(gp_Pnt p, double dx, double dy, double dz)
 {   
     auto box = std::make_shared<Box>(p.X(), p.Y(), p.Z(), dx, dy, dz);
-    box->drawOnScene(myOccView->getContext());
+    drawOnScene(box);
     project->add_object(box);
 }
 
 void occQt::drawCone(gp_Pnt p, double r1, double r2, double h)
 {
     auto cone = std::make_shared<Cone>(p.X(), p.Y(), p.Z(), r1, r2, h);
-    cone->drawOnScene(myOccView->getContext());
+    drawOnScene(cone);
     project->add_object(cone);
 }
 
 void occQt::drawSphere(gp_Pnt p, double r)
 {
     auto sphere = std::make_shared<Sphere>(p.X(), p.Y(), p.Z(), r);
-    sphere->drawOnScene(myOccView->getContext());
+    drawOnScene(sphere);
     project->add_object(sphere);
 }
 
 void occQt::drawCylinder(gp_Pnt p, double r, double h, double angle)
 {
     auto cylinder = std::make_shared<Cylinder>(p.X(), p.Y(), p.Z(), r, h, angle);
-    cylinder->drawOnScene(myOccView->getContext());
+    drawOnScene(cylinder);
     project->add_object(cylinder);
 }
 
 void occQt::drawTorus(gp_Pnt p, double r1, double r2, double angle)
 {
     auto torus = std::make_shared<Torus>(p.X(), p.Y(), p.Z(), r1, r2, angle);
-    torus->drawOnScene(myOccView->getContext());
+    drawOnScene(torus);
     project->add_object(torus);
+}
+
+void occQt::drawOnScene(std::shared_ptr<DrawableObject> drawableObject)
+{
+    drawableObject->drawOnScene(myOccView->getContext());
+    loadModel();
 }
 
 void occQt::loadScene()
@@ -604,11 +610,15 @@ void occQt::checkProjectAndTitle(QUrl& url)
     // Using QQuickView
     view = std::make_unique<QQuickView>();
 
-    QQmlContext *ctxt = view->rootContext();
-    ctxt->setContextProperty("myModel", project->getData());
+    loadModel();
     view->setSource(QUrl("qrc:/ProjectTreeForm.ui.qml"));
     view->show();
-    auto object = view->rootObject();
+}
+
+void occQt::loadModel()
+{
+    QQmlContext *ctxt = view->rootContext();
+    ctxt->setContextProperty("myModel", project->getData());
 }
 
 void occQt::makeCylindricalHelix()

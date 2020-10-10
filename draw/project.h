@@ -8,13 +8,19 @@
 #include <functional>
 #include <QDomElement>
 #include <QVariant>
+#include <QAbstractListModel>
+#include "mymodel.h"
 
 class DrawableObject;
+
+
 class Project
 {
     std::map<int, std::shared_ptr<DrawableObject>> objects_map;
     QUrl url;
     static std::map<std::string, std::function<std::shared_ptr<DrawableObject>(QDomElement)> > creation_funcs;
+    std::shared_ptr<MyModel> model;
+    int count;
 
 public:
     Project(const QUrl&);
@@ -26,6 +32,8 @@ public:
     void save();
     void load();
     QVariant getData();
+private:
+    void addItem(const QString& name);
 };
 
 

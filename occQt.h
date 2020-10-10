@@ -124,6 +124,8 @@ private:
     void checkProjectAndTitle(QUrl& url);
     QString projectName;
     std::unique_ptr<QQuickView> view;
+    void drawOnScene(std::shared_ptr<DrawableObject> drawableObject);
+    void loadModel();
 };
 
 #endif // OCCQT_H
