@@ -17,6 +17,7 @@
 
 #include <AIS_InteractiveContext.hxx>
 #include <QMouseEvent>
+#include <QQuickView>
 #include <memory>
 
 class OccView;
@@ -101,6 +102,8 @@ private slots:
 
     void saveProject(void);
 
+    void saveProjectAs(void);
+
     void openProject(void);
 
     void drawBox(gp_Pnt p, double dx, double dy, double dz, bool newObj);
@@ -118,6 +121,7 @@ private:
     std::unique_ptr<Project> project;
     void checkProjectAndTitle(QUrl& url);
     QString projectName;
+    std::unique_ptr<QQuickView> view;
 };
 
 #endif // OCCQT_H

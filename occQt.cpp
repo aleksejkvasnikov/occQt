@@ -12,6 +12,7 @@
 #include "occQt.h"
 #include "occView.h"
 #include "objectparamsform.h"
+#include "dataobject.h"
 
 #include <QToolBar>
 #include <QTreeView>
@@ -52,9 +53,11 @@
 #include <BRepPrimAPI_MakeTorus.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepPrimAPI_MakeRevol.hxx>
+#include <QQmlContext>
 
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
+#include <QQuickView>
 
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <BRepOffsetAPI_ThruSections.hxx>
@@ -98,6 +101,7 @@ void occQt::createActions( void )
     // File
     connect(ui.actionNewProject, SIGNAL(triggered()), this, SLOT(newProject()));
     connect(ui.actionSaveProject, SIGNAL(triggered()), this, SLOT(saveProject()));
+    connect(ui.actionSaveProjectAs, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
     connect(ui.actionOpenProject, SIGNAL(triggered()), this, SLOT(openProject()));
     connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -486,7 +490,6 @@ void occQt::testHelix()
 
 void occQt::newProject()
 {
-    checkProjectSave();
     auto url = QFileDialog::getSaveFileUrl(this, tr("Create Project"), QUrl(), tr("Project Files (*.xml)"));
     checkProjectAndTitle(url);
 }
@@ -497,9 +500,16 @@ void occQt::saveProject()
     ui.actionSaveProject->setEnabled(false);
 }
 
+void occQt::saveProjectAs()
+{
+    auto url = QFileDialog::getSaveFileUrl(this, tr("Save as"), QUrl(), tr("Project Files (*.xml)"));
+    project->setUrl(url);
+    checkProjectSave();
+    ui.actionSaveProject->setEnabled(false);
+}
+
 void occQt::openProject()
 {
-    checkProjectSave();
     auto url = QFileDialog::getOpenFileUrl(this, tr("Open Project"), QUrl(), tr("Project Files (*.xml)"));
     checkProjectAndTitle(url);
 }
@@ -596,6 +606,7 @@ void occQt::loadScene()
     }
 }
 
+
 void occQt::checkProjectAndTitle(QUrl& url)
 {
     if(url.url().size()>0){
@@ -606,6 +617,14 @@ void occQt::checkProjectAndTitle(QUrl& url)
     project->load();
     setWindowTitle(QString("%1 - %2").arg(projectName, url.toLocalFile()));
     loadScene();
+    // Using QQuickView
+    view = std::make_unique<QQuickView>();
+
+    QQmlContext *ctxt = view->rootContext();
+    ctxt->setContextProperty("myModel", project->getData());
+    view->setSource(QUrl("qrc:/ProjectTreeForm.ui.qml"));
+    view->show();
+    auto object = view->rootObject();
 }
 
 void occQt::makeCylindricalHelix()

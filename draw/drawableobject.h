@@ -19,6 +19,7 @@ public:
     QString get_type() {return type;}
     void set_type(QString t) {type=t;}
     virtual QDomElement xml_element(QDomDocument&)=0;
+    QString toString() {return QString("%1 %2").arg(type, QString::number(id));}
 };
 
 #endif // DRAWABLEOBJECT_H

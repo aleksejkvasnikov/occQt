@@ -17,7 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += testcase
 CONFIG += no_testcase_installs
 # Input
-HEADERS += draw/testproject.h ../draw/project.h ../draw/rectangle.h ../draw/drawableobject.h
-SOURCES += test.cpp draw/testproject.cpp ../draw/project.cpp ../draw/rectangle.cpp ../draw/drawableobject.cpp
+HEADERS += draw/testproject.h ../draw/project.h ../draw/rectangle.h ../draw/drawableobject.h ../dataobject.h
+SOURCES += test.cpp draw/testproject.cpp ../draw/project.cpp ../draw/rectangle.cpp ../draw/drawableobject.cpp ../dataobject.cpp ../draw/box.cpp ../draw/cone.cpp ../draw/cylinder.cpp ../draw/sphere.cpp ../draw/torus.cpp
 
 
