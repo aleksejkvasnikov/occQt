@@ -1,4 +1,4 @@
-QT       += core gui opengl xml quick qml
+QT       += core gui opengl xml quick qml quickwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,6 +11,7 @@ SOURCES += main.cpp \
     draw/cone.cpp \
     draw/cylinder.cpp \
     draw/drawableobject.cpp \
+    draw/listwidget.cpp \
     draw/mymodel.cpp \
     draw/sphere.cpp \
     draw/torus.cpp \
@@ -27,6 +28,7 @@ HEADERS  += \
     draw/cone.h \
     draw/cylinder.h \
     draw/drawableobject.h \
+    draw/listwidget.h \
     draw/mymodel.h \
     draw/sphere.h \
     draw/torus.h \

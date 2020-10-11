@@ -32,6 +32,7 @@ public:
     void save();
     void load();
     QVariant getData();
+    std::shared_ptr<MyModel> getModel() {return model;}
 private:
     void addItem(const QString& name);
 };

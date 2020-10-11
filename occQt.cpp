@@ -74,6 +74,7 @@
 #include <draw/sphere.h>
 #include <draw/cylinder.h>
 #include <draw/torus.h>
+#include <draw/listwidget.h>
 
 occQt::occQt(QWidget *parent)
     : QMainWindow(parent)
@@ -557,7 +558,6 @@ void occQt::drawTorus(gp_Pnt p, double r1, double r2, double angle)
 void occQt::drawOnScene(std::shared_ptr<DrawableObject> drawableObject)
 {
     drawableObject->drawOnScene(myOccView->getContext());
-    loadModel();
 }
 
 void occQt::loadScene()
@@ -608,17 +608,8 @@ void occQt::checkProjectAndTitle(QUrl& url)
     setWindowTitle(QString("%1 - %2").arg(projectName, url.toLocalFile()));
     loadScene();
     // Using QQuickView
-    view = std::make_unique<QQuickView>();
-
-    loadModel();
-    view->setSource(QUrl("qrc:/ProjectTreeForm.ui.qml"));
+    view = std::make_unique<ListWidget>(project->getModel());
     view->show();
-}
-
-void occQt::loadModel()
-{
-    QQmlContext *ctxt = view->rootContext();
-    ctxt->setContextProperty("myModel", project->getData());
 }
 
 void occQt::makeCylindricalHelix()

@@ -2,27 +2,31 @@
 #define MYMODEL_H
 
 #include <QAbstractListModel>
+#include "../dataobject.h"
 
 class MyModel: public QAbstractListModel
 {
     Q_OBJECT
 public:
     enum{
-            PositionRole = Qt::UserRole + 1000
+            NameRole = Qt::UserRole + 1000,
+            ColorRole = Qt::UserRole + 1001
         };
     MyModel(QObject *parent=nullptr);
     ~MyModel();
-    void addITem( QObject* item )
+    void addITem( DataObject* item )
     {
         int n_items = _items.size();
+        beginInsertRows(QModelIndex(), n_items, n_items);
         _items.append( item );
-        //emit dataChanged( n_items, n_items+1 );
+        endInsertRows();
     }
-    int rowCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
+
 private:
-    QList<QObject*> _items;
+    QList<DataObject*> _items;
 };
 
 #endif // MYMODEL_H

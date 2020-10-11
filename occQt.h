@@ -21,6 +21,7 @@
 #include <memory>
 
 class OccView;
+class ListWidget;
 //! Qt main window which include OpenCASCADE for its central widget.
 class occQt : public QMainWindow
 {
@@ -123,9 +124,8 @@ private:
     std::unique_ptr<Project> project;
     void checkProjectAndTitle(QUrl& url);
     QString projectName;
-    std::unique_ptr<QQuickView> view;
+    std::unique_ptr<ListWidget> view;
     void drawOnScene(std::shared_ptr<DrawableObject> drawableObject);
-    void loadModel();
 };
 
 #endif // OCCQT_H
